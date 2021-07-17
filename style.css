@@ -22,6 +22,21 @@ footer {
   padding: 1rem;
 }
 
+header button {
+  padding: 0.5rem 1rem;
+  border: none;
+  outline: none;
+  background-color: #ccc;
+  color: #111;
+}
+
+header button:hover {
+  border-radius: 3px;
+  background-color: #2980b9;
+  color: #fff;
+  cursor: pointer;
+}
+
 footer {
   color: #333;
 }
@@ -34,40 +49,64 @@ footer {
   color: #2980b9;
 }
 
+.weekdays {
+  width: 100%;
+  height: 50px;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.weekday {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  align-items: center;
+  padding: 0 1rem;
+  font-weight: 600;
+}
+
 .calendar {
   width: 100%;
-  height: calc(100vh - 100px);
+  height: calc(100vh - 150px);
   display: grid;
   grid-template-columns: repeat(7, 1fr);
 }
 
 .day {
   padding: 1rem;
-  border-top: 1px solid #ccc;
+  /* border-top: 1px solid #ccc; */
+  /* border-bottom: 1px solid #ccc; */
+  border: 1px solid #ccc;
   font-weight: 600;
   transition: all 0.5s ease;
 }
 
 .day:hover,
 .day.active {
-  /* box-shadow: rgba(41, 128, 185, 0.2) 0px 7px 29px 0px; */
-  /* box-shadow: rgba(41, 128, 185, 0.2) 0px 4px 12px; */
+  cursor: pointer;
   box-shadow: rgba(41, 128, 185, 0.2) 0px 48px 100px 0px;
   box-shadow: rgba(41, 128, 185, 0.2) 0px 30px 25px -5px,
-    inset rgba(41, 128, 185, 0.2) 0px 10px 10px -5px;
+    inset rgba(41, 128, 185, 0.2) 0px 48px 10px -5px;
 }
 
-/* .day:nth-child(even) {
-  border-bottom: 1px solid #ccc;
-} */
+.day.paddingDay {
+  background-color: #ddd;
+  color: #333;
+  cursor: not-allowed;
+  border: none;
+}
 
-.day:nth-child(25),
+/* .day:nth-child(25),
 .day:nth-child(26),
 .day:nth-child(27),
 .day:nth-child(28),
 .day:nth-child(29),
 .day:nth-child(30),
-.day:nth-child(31) {
+.day:nth-child(31),
+.day:nth-child(32),
+.day:nth-child(33),
+.day:nth-child(34),
+.day:nth-child(35) {
   border-bottom: 1px solid #ccc;
 }
 
@@ -77,4 +116,4 @@ footer {
 
 .day:nth-child(even) {
   border-right: 1px solid #ccc;
-}
+} */
