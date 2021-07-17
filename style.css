@@ -1,0 +1,80 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: 100vw;
+  font-family: sans-serif;
+  clear: both;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+header,
+footer {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+footer {
+  color: #333;
+}
+
+.monthYear {
+  font-weight: 600;
+}
+
+.monthYear__year {
+  color: #2980b9;
+}
+
+.calendar {
+  width: 100%;
+  height: calc(100vh - 100px);
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.day {
+  padding: 1rem;
+  border-top: 1px solid #ccc;
+  font-weight: 600;
+  transition: all 0.5s ease;
+}
+
+.day:hover,
+.day.active {
+  /* box-shadow: rgba(41, 128, 185, 0.2) 0px 7px 29px 0px; */
+  /* box-shadow: rgba(41, 128, 185, 0.2) 0px 4px 12px; */
+  box-shadow: rgba(41, 128, 185, 0.2) 0px 48px 100px 0px;
+  box-shadow: rgba(41, 128, 185, 0.2) 0px 30px 25px -5px,
+    inset rgba(41, 128, 185, 0.2) 0px 10px 10px -5px;
+}
+
+/* .day:nth-child(even) {
+  border-bottom: 1px solid #ccc;
+} */
+
+.day:nth-child(25),
+.day:nth-child(26),
+.day:nth-child(27),
+.day:nth-child(28),
+.day:nth-child(29),
+.day:nth-child(30),
+.day:nth-child(31) {
+  border-bottom: 1px solid #ccc;
+}
+
+.day:nth-child(odd) {
+  border-right: 1px solid #ccc;
+}
+
+.day:nth-child(even) {
+  border-right: 1px solid #ccc;
+}
