@@ -74,8 +74,6 @@ footer {
 
 .day {
   padding: 1rem;
-  /* border-top: 1px solid #ccc; */
-  /* border-bottom: 1px solid #ccc; */
   border: 1px solid #ccc;
   font-weight: 600;
   transition: all 0.5s ease;
@@ -95,25 +93,3 @@ footer {
   cursor: not-allowed;
   border: none;
 }
-
-/* .day:nth-child(25),
-.day:nth-child(26),
-.day:nth-child(27),
-.day:nth-child(28),
-.day:nth-child(29),
-.day:nth-child(30),
-.day:nth-child(31),
-.day:nth-child(32),
-.day:nth-child(33),
-.day:nth-child(34),
-.day:nth-child(35) {
-  border-bottom: 1px solid #ccc;
-}
-
-.day:nth-child(odd) {
-  border-right: 1px solid #ccc;
-}
-
-.day:nth-child(even) {
-  border-right: 1px solid #ccc;
-} */
