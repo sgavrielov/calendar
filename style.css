@@ -93,3 +93,7 @@ footer {
   cursor: not-allowed;
   border: none;
 }
+
+.day.paddingDay:hover {
+  box-shadow: none;
+}
