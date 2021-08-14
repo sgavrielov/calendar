@@ -5,31 +5,69 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
-    <title>Calendar</title>
+    <title>Calendar App</title>
   </head>
+
   <body>
     <header>
-      <h3 class="monthYear"></h3>
+      <h3 class="monthYearDisplay">March <span>2021</span></h3>
 
       <div>
-        <button class="prevBtn">Prev</button>
-        <button class="nextBtn">Next</button>
+        <button class="prevMonthBtn">Prev Month</button>
+        <button class="nextMonthBtn">Next Month</button>
+      </div>
+
+      <div class="themeToggle">
+        <input type="checkbox" id="themeToggleBtn" />
+        <label for="themeToggleBtn">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+
+          <svg viewBox="0 0 24 24">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+
+          <div class="ball"></div>
+        </label>
       </div>
     </header>
-    <div class="weekdays">
-      <div class="weekday">Sunday</div>
-      <div class="weekday">Monday</div>
-      <div class="weekday">Tuesday</div>
-      <div class="weekday">Wednesday</div>
-      <div class="weekday">Thursday</div>
-      <div class="weekday">Friday</div>
-      <div class="weekday">Saturday</div>
-    </div>
+
+    <div class="weekdays"></div>
+
     <div class="calendar"></div>
+
+    <!-- <div class="event">
+      <div class="newEvent">
+        <input
+          type="text"
+          class="eventTitleInput"
+          placeholder="Event Title *"
+        />
+        <textarea
+          class="eventDescription"
+          placeholder="Event Description"
+        ></textarea>
+        <button class="addEventBtn">Add</button>
+      </div>
+      <div class="events">
+        <h1>All Event For This Day</h1>
+      </div>
+    </div> -->
+
     <footer>
-      <p class="copyright">Built by <small>Saul Gavrilov</small></p>
-      <small class="version">v1.0.3</small>
+      <p class="copyright">Built by Saul Gavrilov</p>
+      <small class="version">v1.0.5</small>
     </footer>
-    <script src="main.js" defer></script>
+
+    <script type="module" src="index.js"></script>
   </body>
 </html>

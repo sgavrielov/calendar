@@ -1,0 +1,27 @@
+.darkmode .weekdays,
+.darkmode header button,
+.darkmode .weekdays div:nth-child(even),
+.darkmode .weekdays div:nth-child(odd),
+.darkmode .calendar .day:nth-child(odd),
+.darkmode .calendar .paddingDay:nth-child(odd),
+.darkmode .calendar .day:nth-child(even),
+.darkmode .calendar .paddingDay:nth-child(even) {
+  border-color: var(--secondary-dark);
+}
+
+.darkmode .newEvent input {
+  border-color: var(--secondary-dark);
+  color: #ffffff;
+}
+
+.darkmode .newEvent textarea {
+  border-color: var(--secondary-dark);
+  color: #ffffff;
+  background: transparent;
+}
+
+.darkmode .newEvent button {
+  border-color: var(--secondary-dark);
+  background: transparent;
+  color: #ffffff;
+}
