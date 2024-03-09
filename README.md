@@ -1,8 +1,9 @@
 # Calendar App
 
-<small>Built with Vanilla JS</small>
+### Shortcuts
 
-You can use the arrows to navigate between the months (Left, Right)
+- Left Arrow: Navigate to the previous month
+- Right Arrow: Navigate to the next month
 
 ### Light Mode
 
