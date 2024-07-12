@@ -1,14 +1,9 @@
 # Calendar App
 
-### Shortcuts
+## Shortcuts
 
-- Left Arrow: Navigate to the previous month
-- Right Arrow: Navigate to the next month
-
-### Light Mode
-
-<img src="./preview.png" />
-
-### Dark Mode
-
-<img src="./preview_darkmode.png" />
+| Key          | Description                    |
+| :----------- | :----------------------------- |
+| Arrow Left/j | Navigate to the previous month |
+| Right Left/l | Navigate to the next month     |
+| k            | Returns to the current month   |
