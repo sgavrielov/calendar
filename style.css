@@ -1,3 +1,11 @@
+:root {
+  --priamry-clr: hwb(210 2% 0%);
+  --white-clr: hsl(0 0% 100%);
+  --dark-clr: hsl(0, 0%, 10%);
+  --light-clr: hsl(0, 0%, 80%);
+  --black-clr: hsl(0, 0%, 0%);
+}
+
 *,
 *::before,
 *::after {
@@ -7,9 +15,17 @@
 }
 
 body {
-  background: black;
-  color: white;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  color: var(--white-clr);
+  background: var(--black-clr);
   font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+}
+
+a {
+  color: var(--priamry-clr);
 }
 
 svg {
@@ -34,11 +50,11 @@ footer {
 }
 
 footer {
-  color: #505050;
+  color: var(--light-clr);
 }
 
 .date small {
-  color: #3867d6;
+  color: var(--priamry-clr);
 }
 
 .controls {
@@ -50,15 +66,15 @@ footer {
 
 .controls button {
   cursor: pointer;
-  border: 1px solid #202020;
-  color: white;
-  background: black;
+  border: 1px solid var(--dark-clr);
+  color: var(--white-clr);
+  background: var(--black-clr);
   width: 50px;
   height: 40px;
 }
 
 .controls button:hover svg {
-  color: #3867d6;
+  color: var(--priamry-clr);
 }
 
 .weekdays {
@@ -66,15 +82,15 @@ footer {
   height: 70px;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  border-top: 1px solid #202020;
-  border-bottom: 1px solid #202020;
+  border-top: 1px solid var(--dark-clr);
+  border-bottom: 1px solid var(--dark-clr);
 }
 
 .weekday {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-right: 1px solid #202020;
+  border-right: 1px solid var(--dark-clr);
 }
 
 .weekday:last-child {
@@ -89,7 +105,7 @@ main {
 }
 
 .day {
-  border-bottom: 1px solid #202020;
+  border-bottom: 1px solid var(--dark-clr);
   padding: 1rem;
   display: flex;
   flex-direction: column;
@@ -97,11 +113,16 @@ main {
   cursor: pointer;
   width: 100%;
   overflow: hidden;
+  transition: all 300ms linear;
+}
+
+.day:hover {
+  box-shadow: 0 0 5px 1px var(--priamry-clr);
 }
 
 .day .event {
-  background: rgb(56, 103, 214);
-  color: white;
+  background: var(--priamry-clr);
+  color: var(--white-clr);
   width: 100%;
   display: flex;
   flex-wrap: wrap;
@@ -112,20 +133,20 @@ main {
 }
 
 .current_day {
-  box-shadow: 0 0 5px 1px rgb(56, 103, 214);
+  box-shadow: 0 0 5px 1px var(--priamry-clr);
 }
 
 .padding_day {
-  border-bottom: 1px solid #202020;
-  border-right: 1px solid #202020;
+  border-bottom: 1px solid var(--dark-clr);
+  border-right: 1px solid var(--dark-clr);
 }
 
 .day:nth-child(odd) {
-  border-right: 1px solid #202020;
+  border-right: 1px solid var(--dark-clr);
 }
 
 .day:nth-child(even) {
-  border-right: 1px solid #202020;
+  border-right: 1px solid var(--dark-clr);
 }
 
 .day:nth-child(7),
@@ -153,8 +174,8 @@ dialog {
 dialog input {
   width: 100%;
   height: 40px;
-  border: 1px solid #202020;
-  color: black;
+  border: 1px solid var(--dark-clr);
+  color: var(--dark-clr);
   padding: 1rem;
   border-radius: 5px;
 }
@@ -166,27 +187,27 @@ dialog textarea {
   max-height: 250px;
   padding: 1rem;
   font-family: inherit;
-  border: 1px solid #202020;
+  border: 1px solid var(--dark-clr);
   border-radius: 5px;
 }
 
-dialog button[data-close-new-event-modal-btn],
-dialog button[data-close-event-modal-btn] {
+dialog button[close-new-event-modal-btn],
+dialog button[close-event-modal-btn] {
   position: absolute;
   top: 5px;
   right: 5px;
   cursor: pointer;
-  border: 1px solid #202020;
-  color: black;
+  border: 1px solid var(--dark-clr);
+  color: var(--black-clr);
   border: none;
   background: transparent;
 }
 
 dialog button {
   cursor: pointer;
-  border: 1px solid #202020;
-  color: white;
+  border: 1px solid var(--dark-clr);
+  color: var(--white-clr);
   border: 1px solid black;
   height: 40px;
-  background: black;
+  background: var(--dark-clr);
 }

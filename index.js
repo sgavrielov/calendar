@@ -11,12 +11,12 @@ const event_modal_description = event_modal.querySelector("p");
 const title = document.querySelector("#title");
 const description = document.querySelector("#description");
 const data_close_new_event_modal_btn = document.querySelector(
-  "[data-close-new-event-modal-btn]"
+  "[close-new-event-modal-btn]"
 );
 const data_close_event_modal_btn = document.querySelector(
-  "[data-close-event-modal-btn]"
+  "[close-event-modal-btn]"
 );
-const data_save_event_btn = document.querySelector("[data-save-even-btn]");
+const data_save_event_btn = document.querySelector("[save-even-btn]");
 const delete_event_btn = document.querySelector("[delete-event-btn]");
 const weekdays = [
   "Sunday",
@@ -32,23 +32,21 @@ let clicked = null;
 let events = localStorage.getItem("events")
   ? JSON.parse(localStorage.getItem("events"))
   : [];
+let modal_open = false;
 
 prev_month_btn.addEventListener("click", () => goto(-1));
 next_month_btn.addEventListener("click", () => goto(1));
 data_close_new_event_modal_btn.addEventListener("click", () => close_modal(1));
 data_close_event_modal_btn.addEventListener("click", () => close_modal(2));
 data_save_event_btn.addEventListener("click", save_event);
-delete_event_btn.addEventListener("click", () => {
-  events = events.filter((e) => e.date !== clicked);
-  localStorage.setItem("events", JSON.stringify(events));
-  close_modal(2);
-  load();
-});
+delete_event_btn.addEventListener("click", delete_event);
 
 document.addEventListener("keydown", (e) => {
-  const tagName = document.activeElement.tagName.toLowerCase();
+  const tag_name = document.activeElement.tagName.toLowerCase();
 
-  if (tagName === "input") return;
+  if (tag_name === "input" || tag_name === "textarea") return;
+  if (modal_open) return;
+  console.log(e.key.toLowerCase());
 
   switch (e.key.toLowerCase()) {
     case "k":
@@ -72,6 +70,7 @@ function goto(n) {
 }
 
 function close_modal(modal_type) {
+  modal_open = false;
   switch (modal_type) {
     case 1:
       new_event_modal.close();
@@ -94,6 +93,13 @@ function save_event() {
   });
   localStorage.setItem("events", JSON.stringify(events));
   close_modal(1);
+  load();
+}
+
+function delete_event() {
+  events = events.filter((e) => e.date !== clicked);
+  localStorage.setItem("events", JSON.stringify(events));
+  close_modal(2);
   load();
 }
 
@@ -140,6 +146,7 @@ function load() {
         day_square.append(event_square);
 
         event_square.addEventListener("click", () => {
+          modal_open = true;
           event_modal.showModal();
           event_modal.style.display = "flex";
           clicked = day_string;
@@ -147,7 +154,8 @@ function load() {
           event_modal_description.textContent = efd.description;
         });
       } else {
-        day_square.addEventListener("click", (e) => {
+        day_square.addEventListener("click", () => {
+          modal_open = true;
           new_event_modal.querySelector("h3").textContent = `${month + 1}/${
             i - padding_days
           }/${year}`;
