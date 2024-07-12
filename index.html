@@ -2,72 +2,75 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css" />
     <title>Calendar App</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
-
   <body>
     <header>
-      <h3 class="monthYearDisplay">March <span>2021</span></h3>
-
-      <div>
-        <button class="prevMonthBtn">Prev Month</button>
-        <button class="nextMonthBtn">Next Month</button>
+      <div class="date">
+        <h3></h3>
+        <small></small>
       </div>
 
-      <div class="themeToggle">
-        <input type="checkbox" id="themeToggleBtn" />
-        <label for="themeToggleBtn">
+      <div class="controls">
+        <button class="prev_month_btn" title="Show previous month">
           <svg viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="5"></circle>
-            <line x1="12" y1="1" x2="12" y2="3"></line>
-            <line x1="12" y1="21" x2="12" y2="23"></line>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-            <line x1="1" y1="12" x2="3" y2="12"></line>
-            <line x1="21" y1="12" x2="23" y2="12"></line>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
           </svg>
+        </button>
 
+        <button class="next_month_btn" title="Show next month">
           <svg viewBox="0 0 24 24">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
           </svg>
-
-          <div class="ball"></div>
-        </label>
+        </button>
       </div>
     </header>
 
-    <div class="weekdays"></div>
+    <div class="weekdays">
+      <div class="weekday">Sunday</div>
+      <div class="weekday">Monday</div>
+      <div class="weekday">Tuesday</div>
+      <div class="weekday">Wednesday</div>
+      <div class="weekday">Thursday</div>
+      <div class="weekday">Friday</div>
+      <div class="weekday">Saturday</div>
+    </div>
 
-    <div class="calendar"></div>
-
-    <!-- <div class="event">
-      <div class="newEvent">
-        <input
-          type="text"
-          class="eventTitleInput"
-          placeholder="Event Title *"
-        />
-        <textarea
-          class="eventDescription"
-          placeholder="Event Description"
-        ></textarea>
-        <button class="addEventBtn">Add</button>
-      </div>
-      <div class="events">
-        <h1>All Event For This Day</h1>
-      </div>
-    </div> -->
+    <main class="calendar"></main>
 
     <footer>
-      <p class="copyright">Built by Saul Gavrilov</p>
-      <small class="version">v1.0.5</small>
+      <p>&copy; Copyright</p>
     </footer>
 
-    <script type="module" src="index.js"></script>
+    <dialog new-event-modal>
+      <button data-close-new-event-modal-btn>
+        <svg viewBox="0 0 24 24">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      <h3></h3>
+      <input type="text" placeholder="title" id="title" />
+      <textarea name="" id="description" placeholder="Description"></textarea>
+      <button data-save-even-btn>Save</button>
+    </dialog>
+
+    <dialog event-modal>
+      <button data-close-event-modal-btn>
+        <svg viewBox="0 0 24 24">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      <h3></h3>
+      <p></p>
+      <button delete-event-btn>Delete</button>
+    </dialog>
+
+    <script src="index.js"></script>
   </body>
 </html>
