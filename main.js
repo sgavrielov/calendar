@@ -1,23 +1,28 @@
 const date_ui = document.querySelector(".date");
 const month_ui = date_ui.querySelector("h3");
 const year_ui = date_ui.querySelector("small");
+
 const prev_month_btn = document.querySelector(".prev_month_btn");
 const next_month_btn = document.querySelector(".next_month_btn");
+
 const calendar = document.querySelector(".calendar");
+
 const new_event_modal = document.querySelector("[new-event-modal]");
+const nem_title_input = new_event_modal.querySelector("#title");
+const nem_description_input = new_event_modal.querySelector("#description");
+const nem_close_btn = new_event_modal.querySelector(
+  "[close-new-event-modal-btn]"
+);
+const data_save_event_btn = new_event_modal.querySelector("[save-even-btn]");
+
 const event_modal = document.querySelector("[event-modal]");
 const event_modal_title = event_modal.querySelector("h3");
 const event_modal_description = event_modal.querySelector("p");
-const title = document.querySelector("#title");
-const description = document.querySelector("#description");
-const data_close_new_event_modal_btn = document.querySelector(
-  "[close-new-event-modal-btn]"
-);
-const data_close_event_modal_btn = document.querySelector(
+const event_modal_close_btn = event_modal.querySelector(
   "[close-event-modal-btn]"
 );
-const data_save_event_btn = document.querySelector("[save-even-btn]");
-const delete_event_btn = document.querySelector("[delete-event-btn]");
+const delete_event_btn = event_modal.querySelector("[delete-event-btn]");
+
 const weekdays = [
   "Sunday",
   "Monday",
@@ -36,8 +41,8 @@ let modal_open = false;
 
 prev_month_btn.addEventListener("click", () => goto(-1));
 next_month_btn.addEventListener("click", () => goto(1));
-data_close_new_event_modal_btn.addEventListener("click", () => close_modal(1));
-data_close_event_modal_btn.addEventListener("click", () => close_modal(2));
+nem_close_btn.addEventListener("click", () => close_modal(1));
+event_modal_close_btn.addEventListener("click", () => close_modal(2));
 data_save_event_btn.addEventListener("click", save_event);
 delete_event_btn.addEventListener("click", delete_event);
 
@@ -75,8 +80,8 @@ function close_modal(modal_type) {
     case 1:
       new_event_modal.close();
       new_event_modal.style.display = "none";
-      title.value = "";
-      description.value = "";
+      nem_title_input.value = "";
+      nem_description_input.value = "";
       clicked = null;
     case 2:
       event_modal.close();
@@ -85,10 +90,10 @@ function close_modal(modal_type) {
 }
 
 function save_event() {
-  if (!title.value) return;
+  if (!nem_title_input.value) return;
   events.push({
-    title: title.value,
-    description: description.value,
+    nem_title_input: nem_title_input.value,
+    nem_description_input: nem_description_input.value,
     date: clicked,
   });
   localStorage.setItem("events", JSON.stringify(events));
@@ -142,7 +147,9 @@ function load() {
         const event_square = document.createElement("div");
         event_square.classList.add("event");
         event_square.textContent =
-          efd.title.length > 30 ? efd.title.slice(0, 30) + "..." : efd.title;
+          efd.nem_title_input.length > 30
+            ? efd.nem_title_input.slice(0, 30) + "..."
+            : efd.nem_title_input;
         day_square.append(event_square);
 
         event_square.addEventListener("click", () => {
@@ -150,8 +157,8 @@ function load() {
           event_modal.showModal();
           event_modal.style.display = "flex";
           clicked = day_string;
-          event_modal_title.textContent = efd.title;
-          event_modal_description.textContent = efd.description;
+          event_modal_title.textContent = efd.nem_title_input;
+          event_modal_description.textContent = efd.nem_description_input;
         });
       } else {
         day_square.addEventListener("click", () => {
