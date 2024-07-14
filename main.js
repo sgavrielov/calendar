@@ -51,7 +51,6 @@ document.addEventListener("keydown", (e) => {
 
   if (tag_name === "input" || tag_name === "textarea") return;
   if (modal_open) return;
-  console.log(e.key.toLowerCase());
 
   switch (e.key.toLowerCase()) {
     case "k":
@@ -92,8 +91,8 @@ function close_modal(modal_type) {
 function save_event() {
   if (!nem_title_input.value) return;
   events.push({
-    nem_title_input: nem_title_input.value,
-    nem_description_input: nem_description_input.value,
+    title: nem_title_input.value,
+    description: nem_description_input.value,
     date: clicked,
   });
   localStorage.setItem("events", JSON.stringify(events));
@@ -147,9 +146,7 @@ function load() {
         const event_square = document.createElement("div");
         event_square.classList.add("event");
         event_square.textContent =
-          efd.nem_title_input.length > 30
-            ? efd.nem_title_input.slice(0, 30) + "..."
-            : efd.nem_title_input;
+          efd.title.length > 30 ? efd.title.slice(0, 30) + "..." : efd.title;
         day_square.append(event_square);
 
         event_square.addEventListener("click", () => {
@@ -157,15 +154,13 @@ function load() {
           event_modal.showModal();
           event_modal.style.display = "flex";
           clicked = day_string;
-          event_modal_title.textContent = efd.nem_title_input;
-          event_modal_description.textContent = efd.nem_description_input;
+          event_modal_title.textContent = efd.title;
+          event_modal_description.textContent = efd.description;
         });
       } else {
         day_square.addEventListener("click", () => {
           modal_open = true;
-          new_event_modal.querySelector("h3").textContent = `${month + 1}/${
-            i - padding_days
-          }/${year}`;
+          new_event_modal.querySelector("h3").textContent = day_string;
           clicked = day_string;
           new_event_modal.showModal();
           new_event_modal.style.display = "flex";
