@@ -107,6 +107,36 @@ function delete_event() {
   load();
 }
 
+function dragDropEvent() {
+  const days = document.querySelectorAll(".canDragDrop");
+  const evts = document.querySelectorAll(".event");
+
+  let oldDate = undefined;
+
+  evts.forEach((ev) => {
+    ev.addEventListener("dragstart", (e) => {
+      e.target.classList.add("dragging");
+      oldDate = e.target.parentElement.getAttribute("date");
+    });
+
+    ev.addEventListener("dragend", (e) => {
+      e.target.classList.remove("dragging");
+      const efd = events.find((oldEvent) => oldEvent.date === oldDate);
+      const newDate = e.target.parentElement.getAttribute("date");
+      efd.date = newDate;
+      localStorage.setItem("events", JSON.stringify(events));
+      oldDate = undefined;
+    });
+  });
+
+  days.forEach((day) => {
+    day.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      day.append(document.querySelector(".dragging"));
+    });
+  });
+}
+
 function load() {
   const date = new Date();
 
@@ -140,6 +170,10 @@ function load() {
       const day_string = `${month + 1}/${i - padding_days}/${year}`;
       day_square.setAttribute("date", day_string);
 
+      if (i >= padding_days + day) {
+        day_square.classList.add("canDragDrop");
+      }
+
       const efd = events.find((ev) => ev.date === day_string);
 
       if (efd) {
@@ -148,6 +182,7 @@ function load() {
         event_square.textContent =
           efd.title.length > 30 ? efd.title.slice(0, 30) + "..." : efd.title;
         day_square.append(event_square);
+        event_square.draggable = true;
 
         event_square.addEventListener("click", () => {
           modal_open = true;
@@ -184,3 +219,4 @@ function load() {
 }
 
 load();
+dragDropEvent();
