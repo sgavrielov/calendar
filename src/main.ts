@@ -118,6 +118,7 @@ function addAndUpdateEvent() {
     events.push(newEvent);
   }
 
+  cancelAndDeleteBtn?.removeEventListener("click", closeDialog);
   localStorage.setItem("events", JSON.stringify(events));
   closeDialog();
   load();
