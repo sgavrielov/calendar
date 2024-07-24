@@ -1,2 +1,4 @@
-assets/
+dist/assets/js
 *.png
+*.js
+*.mjs

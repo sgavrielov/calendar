@@ -3,25 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Calendar App</title>
-    <link rel="stylesheet" href="style.css" />
+    <title>Calendar</title>
+    <link rel="stylesheet" href="./assets/css/styles.css" />
   </head>
+
   <body>
     <header>
-      <div class="date">
-        <h3></h3>
-        <small></small>
-      </div>
+      <div class="dateUI"></div>
 
       <div class="controls">
-        <button class="prev_month_btn" title="Show previous month">
+        <button class="prevMonthBtn" title="Go to the previous month">
           <svg viewBox="0 0 24 24">
             <line x1="19" y1="12" x2="5" y2="12"></line>
             <polyline points="12 19 5 12 12 5"></polyline>
           </svg>
         </button>
 
-        <button class="next_month_btn" title="Show next month">
+        <button class="nextMonthBtn" title="Got to the next month">
           <svg viewBox="0 0 24 24">
             <line x1="5" y1="12" x2="19" y2="12"></line>
             <polyline points="12 5 19 12 12 19"></polyline>
@@ -40,40 +38,33 @@
       <div class="weekday">Saturday</div>
     </div>
 
-    <main class="calendar"></main>
+    <div class="calendar"></div>
 
-    <footer>
-      <p>
-        Built by
-        <a href="https://github.com/sgavrielov" target="_blank"> S.G</a>
-      </p>
-    </footer>
-
-    <dialog new-event-modal>
-      <button close-new-event-modal-btn>
+    <dialog>
+      <button class="closeDialogBtn">
         <svg viewBox="0 0 24 24">
           <line x1="18" y1="6" x2="6" y2="18"></line>
           <line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>
       </button>
-      <h3></h3>
-      <input type="text" placeholder="title" id="title" />
-      <textarea name="" id="description" placeholder="Description"></textarea>
-      <button save-even-btn>Save</button>
+
+      <div class="eventForm">
+        <input type="date" name="date" class="dateInput" />
+        <input
+          type="text"
+          name="title"
+          class="titleInput"
+          placeholder="Event Title"
+        />
+        <textarea name="description" class="descriptionInput"></textarea>
+        <div class="btns">
+          <button class="addAndUpdateBtn">ADD</button>
+          <button class="cancelAndDeleteBtn">CANCEL</button>
+        </div>
+      </div>
     </dialog>
 
-    <dialog event-modal>
-      <button close-event-modal-btn>
-        <svg viewBox="0 0 24 24">
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-      </button>
-      <h3></h3>
-      <p></p>
-      <button delete-event-btn>Delete</button>
-    </dialog>
-
-    <script src="main.js"></script>
+    <script src="./assets/js/utils.js"></script>
+    <script src="./assets/js/main.js"></script>
   </body>
 </html>
