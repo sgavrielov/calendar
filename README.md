@@ -1,9 +1,6 @@
-# Calendar App
+# Calendar
 
-## Shortcuts
+## Acknowledgements
 
-| Key            | Description                    |
-| :------------- | :----------------------------- |
-| Arrow Left / J | Navigate to the previous month |
-| Right Left / L | Navigate to the next month     |
-| K              | Returns to the current month   |
+- Icons: [Feather](https://feathericons.com/)
+- Markdown Editor: [Marked](https://marked.js.org/)
