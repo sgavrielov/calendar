@@ -1,4 +1,5 @@
-dist/assets/js
+data/
+old/
 *.png
-*.js
-*.mjs
+assets/js/marked.min.js
+dist/
