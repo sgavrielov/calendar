@@ -5,7 +5,7 @@ class UI {
    * @param {string[]} weekdays
    */
   static setWeekdays(weekdays) {
-    const weekdaysContainer = document.querySelector("[data-weekdays]");
+    const weekdaysContainer = document.querySelector("[weekdays]");
 
     weekdays.forEach((weekday) => {
       const weekdayElement = document.createElement("div");
@@ -21,8 +21,8 @@ class UI {
    * @param {string} locale
    */
   static setViewingDate(date, locale) {
-    const currentMonthElem = document.querySelector("[data-current-month]");
-    const currentYearElem = document.querySelector("[data-current-year]");
+    const currentMonthElem = document.querySelector("[current-month]");
+    const currentYearElem = document.querySelector("[current-year]");
 
     currentMonthElem.textContent = date.toLocaleDateString(locale, {
       month: "long",

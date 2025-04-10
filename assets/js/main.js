@@ -1,119 +1,89 @@
-const currentMonthElem = document.querySelector("[data-current-month]");
-const currentYearElem = document.querySelector("[data-current-year]");
-const prevMonthBtn = document.querySelector("[data-prev-btn]");
-const nextMonthBtn = document.querySelector("[data-next-btn]");
-const weekdaysElem = document.querySelector("[data-weekdays]");
-const calendar = document.querySelector("[data-calendar]");
-const newTodoDialog = document.querySelector("[data-new-todo]");
-const closeDialogBtn = document.querySelector(
-  "[data-close-new-todo-dialog-btn]"
+const prevMonthBtn = document.querySelector("[prev-btn]");
+const nextMonthBtn = document.querySelector("[next-btn]");
+const loadDataBtn = document.querySelector("[load-data-input]");
+const calendar = document.querySelector("[calendar]");
+
+const toggleEditDayDataBtn = document.querySelector(
+  "[toggle-edit-day-data-btn]"
 );
-const newTodoTitle = document.querySelector("[data-todo-title]");
-const newTodoDesc = document.querySelector("[data-todo-desc]");
-const saveNewTodoBtn = document.querySelector("[data-save-new-todo-btn]");
-const cancelNewTodoBtn = document.querySelector("[data-cancel-new-todo-btn]");
+const viewDayData = document.querySelector("[day-data]");
+const editDayData = document.querySelector("[edit-day-data]");
+let editMode = false;
+let markdownContent = `
+# Hello 👋
 
-const locale = navigator.languages;
+This is a sample **README** file.
+- Hello
+  - World
+`;
 
-let weekdays = getWeekdays(locale);
+const locale = navigator.language || "en-US";
+
+let weekdays = initializeWeekdays(locale);
+const weekends = new Intl.Locale(locale).weekInfo.weekend;
 let nav = 0;
 let newTodo = {};
+let data = {};
+viewDayData.innerHTML = marked.parse(markdownContent);
 
-const data = {
-  2025: {
-    4: {
-      1: [{ title: "FIRST", description: "First desc" }],
-      7: [{ title: "SECOND", description: "second desc" }],
-    },
-  },
-};
+UI.setWeekdays(weekdays);
+init(locale, nav);
 
-prevMonthBtn.addEventListener("click", () => load(--nav));
-nextMonthBtn.addEventListener("click", () => load(++nav));
-closeDialogBtn.addEventListener("click", () => {
-  newTodoTitle.value = "";
-  newTodoDesc.value = "";
+toggleEditDayDataBtn.addEventListener("click", () => {
+  editMode = !editMode;
+  console.log(editMode);
 
-  newTodoDialog.close();
-});
-
-saveNewTodoBtn.addEventListener("click", () => {
-  newTodo.title = newTodoTitle.value;
-  newTodo.desc = newTodoDesc.value;
-
-  const json = JSON.stringify(newTodo, null, 2);
-
-  const blob = new Blob([json], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `${newTodo.year}.json`;
-  document.body.appendChild(a);
-  a.click();
-
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-});
-
-weekdays = rotateWeekdays(getStartOfWeek(new Date()).getDay(), locale);
-weekdays.forEach((weekday) => {
-  const elem = document.createElement("div");
-  elem.classList.add("weekday");
-  elem.textContent = weekday;
-  weekdaysElem.append(elem);
-});
-
-function rotateWeekdays(startDayIndex = 0) {
-  return weekdays.slice(startDayIndex).concat(weekdays.slice(0, startDayIndex));
-}
-
-async function loadFile(year) {
-  try {
-    const response = await fetch(`./data/${year}.json`);
-
-    if (!response.ok) {
-      throw new Error(
-        `Failed to load file: ${response.status} ${response.statusText}`
-      );
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (err) {
-    console.error(err.message);
+  if (editMode) {
+    viewDayData.style.display = "none";
+    editDayData.style.display = "block";
+    editDayData.value = markdownContent;
+    toggleEditDayDataBtn.style.background = "hsl(210, 100%, 51%)";
+  } else {
+    viewDayData.innerHTML = marked.parse(markdownContent);
+    viewDayData.style.display = "block";
+    editDayData.style.display = "none";
+    toggleEditDayDataBtn.style.background = "hsl(0, 0%, 5%)";
   }
-}
+});
 
-async function load() {
+editDayData.addEventListener("input", (e) => {
+  markdownContent = e.target.value;
+});
+
+loadDataBtn.addEventListener("change", async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  try {
+    const text = await file.text();
+    data = JSON.parse(text);
+
+    init(locale, nav);
+  } catch (error) {
+    console.log("ERROR");
+  }
+});
+
+prevMonthBtn.addEventListener("click", () => init(locale, --nav));
+nextMonthBtn.addEventListener("click", () => init(locale, ++nav));
+
+function init(locale, nav) {
   const date = new Date();
-  const lang = navigator.language || "en-US";
 
   if (nav !== 0) {
     date.setMonth(new Date().getMonth() + nav);
   }
 
+  UI.setViewingDate(date, locale);
+
   const day = date.getDate();
   const month = date.getMonth();
   const year = date.getFullYear();
-
-  const first_day = new Date(year, month, 1);
+  const firstDay = new Date(year, month, 1);
   const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-  currentMonthElem.textContent = date.toLocaleDateString(lang, {
-    month: "long",
-  });
-
-  currentYearElem.textContent = date.toLocaleDateString(lang, {
-    year: "numeric",
-  });
-
   const paddingDays = weekdays.indexOf(
-    first_day.toLocaleDateString(lang, { weekday: "long" })
+    firstDay.toLocaleDateString(locale, { weekday: "long" })
   );
-
-  const data = await loadFile(year);
-  const currentMonthData = data[year][month];
-  // console.log(currentMonthData);
 
   calendar.innerHTML = "";
   for (let i = 1; i <= paddingDays + daysInMonth; ++i) {
@@ -123,32 +93,33 @@ async function load() {
       daySquare.textContent = i - paddingDays;
       daySquare.setAttribute("date", `${i - paddingDays}/${month}/${year}`);
 
-      if (currentMonthData && currentMonthData[i - paddingDays]) {
-        const de = document.createElement("div");
-        de.classList.add("de");
-        de.textContent = currentMonthData[i - paddingDays].length;
-        daySquare.append(de);
-        // console.log(currentMonthData[i - paddingDays].length);
+      if (nav < 0 || (nav <= 0 && i - paddingDays < day)) {
+        daySquare.classList.add("pastMonth");
+      } else {
+        const addNewDataBtn = document.createElement("button");
+        addNewDataBtn.classList.add("addNewDataBtn");
+        addNewDataBtn.innerHTML = `<svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>`;
+        daySquare.append(addNewDataBtn);
+      }
+
+      if (
+        data[year] &&
+        data[year][month] &&
+        data[year][month][i - paddingDays]
+      ) {
+        const openDataDayBtn = document.createElement("button");
+        openDataDayBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>`;
+        daySquare.append(openDataDayBtn);
+      }
+
+      const w = ((i - 1) % 7) + 1;
+      if (weekends.includes(w)) {
+        daySquare.classList.add("weekend");
       }
 
       if (nav === 0 && i - paddingDays === day) {
         daySquare.classList.add("currentDay");
-        // console.log(i);
       }
-
-      daySquare.addEventListener("click", (e) => {
-        // console.log(e.currentTarget.getAttribute("date"));
-        new Notification({
-          text: e.currentTarget.getAttribute("date"),
-          autoClose: 3000,
-          showProgress: false,
-        });
-
-        newTodo.year = year;
-        newTodo.month = month;
-
-        newTodoDialog.showModal();
-      });
     } else {
       daySquare.classList.add("pastMonth");
     }
@@ -156,42 +127,17 @@ async function load() {
   }
 }
 
-function getDayData(day) {
-  if (currentMonthData && currentMonthData[day]) {
-    const de = document.createElement("div");
-    de.classList.add("de");
-    de.textContent = currentMonthData[day].length;
-    daySquare.append(de);
-    // console.log(currentMonthData[i - paddingDays].length);
-  }
-}
-
-function getWeekdays(locale) {
-  const baseDate = new Date();
+function initializeWeekdays(locale = navigator.language) {
+  const firstDayIndex = new Intl.Locale(locale).weekInfo.firstDay;
   const w = [];
 
-  for (let i = 0; i < 7; i++) {
-    const date = new Date(baseDate);
-    date.setDate(baseDate.getDate() + i);
+  for (let i = 0; i < 7; ++i) {
+    const date = new Date();
+    date.setDate(date.getDate() - date.getDay() + i);
 
-    const weekday = date.toLocaleDateString(locale, { weekday: "long" });
-    w.push(weekday);
+    const weekName = date.toLocaleDateString(locale, { weekday: "long" });
+    w.push(weekName);
   }
 
-  return w;
+  return w.slice(firstDayIndex).concat(w.slice(0, firstDayIndex));
 }
-
-function getStartOfWeek(date) {
-  const inputDate = new Date(date);
-  const day = inputDate.getDay();
-
-  const firstDay = new Intl.Locale(locale).weekInfo.firstDay;
-
-  const diff = (day - firstDay + 7) % 7;
-
-  inputDate.setDate(inputDate.getDate() - diff);
-
-  return inputDate;
-}
-
-load(nav);
