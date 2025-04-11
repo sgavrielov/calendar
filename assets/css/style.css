@@ -1,6 +1,7 @@
 :root {
   --primary-clr: hsl(210, 100%, 51%);
   --danger-clr: hsl(6, 63%, 46%);
+  --success-clr: hsl(145, 63%, 49%);
   --border-clr: hsl(0, 0%, 15%);
   --past-day-bg: hsl(0, 0%, 5%);
   --weekend-bg: hsl(0, 0%, 3%);
@@ -191,10 +192,27 @@ header nav button:hover {
   color: white;
   background: var(--past-day-bg);
   border: 1px solid var(--past-day-bg);
-  display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  display: none;
+}
+
+.day .dataDayBtn {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--primary-clr);
+  border: none;
+  cursor: pointer;
+}
+
+.day:hover .addNewDataBtn {
+  display: flex;
 }
 
 .day .addNewDataBtn svg {
@@ -213,7 +231,7 @@ header nav button:hover {
   border-radius: 3px;
   box-shadow: 0 0 5px 1px var(--primary-clr);
   overflow-y: auto;
-  /* display: none; */
+  display: none;
 }
 
 .viewDataContainer .viewDataControls {
@@ -222,20 +240,35 @@ header nav button:hover {
   display: flex;
   align-items: center;
   padding-inline: 2rem;
+  gap: 2rem;
   background: var(--weekend-bg);
 }
 
 .viewDataContainer .viewDataControls button {
   height: 35px;
   width: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
 }
 
-.viewDataContainer .viewDataControls button[toggle-edit-day-data-btn] {
-  color: white;
+.viewDataContainer .viewDataControls button {
   border: none;
-  background: var(--past-day-bg);
+  color: white;
   border-radius: 3px;
+}
+
+.viewDataContainer .viewDataControls button[toggle-edit-day-data-btn] {
+  background: var(--past-day-bg);
+}
+
+.viewDataContainer .viewDataControls button[close-view-data-btn] {
+  background: var(--danger-clr);
+}
+
+.viewDataContainer .viewDataControls button[save-day-data-btn] {
+  background: var(--success-clr);
 }
 
 .viewDataContainer .markdown-body,
@@ -243,7 +276,7 @@ header nav button:hover {
   height: calc(100% - 70px);
   width: 100%;
   padding: 2rem;
-  /* display: none; */
+  display: none;
 }
 
 .viewDataContainer .markdown-body {

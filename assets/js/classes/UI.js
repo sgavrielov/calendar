@@ -20,15 +20,22 @@ class UI {
    * @param {Date} date
    * @param {string} locale
    */
-  static setViewingDate(date, locale) {
-    const currentMonthElem = document.querySelector("[current-month]");
-    const currentYearElem = document.querySelector("[current-year]");
+  static getFormattedDate(date, locale) {
+    const d = {};
 
-    currentMonthElem.textContent = date.toLocaleDateString(locale, {
+    d.weekday = date.toLocaleDateString(locale, {
+      weekday: "long",
+    });
+    d.day = date.toLocaleDateString(locale, {
+      day: "numeric",
+    });
+    d.month = date.toLocaleDateString(locale, {
       month: "long",
     });
-    currentYearElem.textContent = date.toLocaleDateString(locale, {
+    d.year = date.toLocaleDateString(locale, {
       year: "numeric",
     });
+
+    return d;
   }
 }
