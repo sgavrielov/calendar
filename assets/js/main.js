@@ -16,13 +16,7 @@ const saveDayData = document.querySelector("[save-day-data-btn]");
 const editDayData = document.querySelector("[edit-day-data]");
 const closeViewDataBtn = document.querySelector("[close-view-data-btn]");
 let editMode = false;
-let markdownContent = `
-# Hello 👋
-
-This is a sample **README** file.
-- Hello
-  - World
-`;
+let markdownContent = "";
 
 const locale = navigator.language || "en-US";
 
@@ -50,23 +44,23 @@ saveDayData.addEventListener("click", (e) => {
   data[year][month][day] = json;
 
   downloadDataBtn.style.display = "block";
-  console.log(data);
 
   new Notification({
     text: "Data has been saved",
     showProgress: false,
   });
+
+  init(locale, nav);
 });
 
 downloadDataBtn.addEventListener("click", () => {
-  const [day, month, year] = editingDate.split("/");
   const blob = new Blob([JSON.stringify(data)], {
     type: "application/json",
   });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = `${year}.json`;
+  a.download = `${new Date().getTime()}.json`;
 
   document.body.append(a);
   a.click();
@@ -109,7 +103,10 @@ loadDataBtn.addEventListener("change", async (e) => {
 
     init(locale, nav);
   } catch (error) {
-    console.log("ERROR");
+    new Notification({
+      text: "Couldn't load a data file",
+      showProgress: false,
+    });
   }
 });
 
@@ -146,25 +143,30 @@ function init(locale, nav) {
       if (nav < 0 || (nav <= 0 && i - paddingDays < day)) {
         daySquare.classList.add("pastMonth");
       } else {
-        const addNewDataBtn = document.createElement("button");
-        addNewDataBtn.classList.add("addNewDataBtn");
-        addNewDataBtn.innerHTML = `<svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>`;
+        if (
+          Object.keys(data).length === 0 ||
+          !data[year][month][i - paddingDays]
+        ) {
+          const addNewDataBtn = document.createElement("button");
+          addNewDataBtn.classList.add("addNewDataBtn");
+          addNewDataBtn.innerHTML = `<svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>`;
 
-        addNewDataBtn.addEventListener("click", () => {
-          editingDate = `${i - paddingDays}/${month}/${year}`;
-          viewDataDate.textContent = date.toLocaleDateString(locale, {
-            day: "2-digit",
-            month: "long",
-            year: "numeric",
+          addNewDataBtn.addEventListener("click", () => {
+            editingDate = `${i - paddingDays}/${month}/${year}`;
+            viewDataDate.textContent = date.toLocaleDateString(locale, {
+              day: "2-digit",
+              month: "long",
+              year: "numeric",
+            });
+            viewDataContainer.style.display = "block";
+            viewDayData.style.display = "none";
+            editDayData.style.display = "block";
+            editDayData.value = markdownContent;
+            toggleEditDayDataBtn.style.background = "hsl(210, 100%, 51%)";
           });
-          viewDataContainer.style.display = "block";
-          viewDayData.style.display = "none";
-          editDayData.style.display = "block";
-          editDayData.value = markdownContent;
-          toggleEditDayDataBtn.style.background = "hsl(210, 100%, 51%)";
-        });
 
-        daySquare.append(addNewDataBtn);
+          daySquare.append(addNewDataBtn);
+        }
       }
 
       if (
@@ -178,12 +180,12 @@ function init(locale, nav) {
         openDataDayBtn.addEventListener("click", () => {
           editingDate = `${i - paddingDays}/${month}/${year}`;
           viewDataContainer.style.display = "block";
-          viewDayData.style.display = "none";
-          editDayData.style.display = "block";
+          viewDayData.style.display = "block";
+          editDayData.style.display = "none";
 
           // editDayData.value = markdownContent;
           markdownContent = JSON.parse(data[year][month][i - paddingDays]);
-          editDayData.value = markdownContent;
+          viewDayData.innerHTML = marked.parse(markdownContent);
         });
         daySquare.append(openDataDayBtn);
       }

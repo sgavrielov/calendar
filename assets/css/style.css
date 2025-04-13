@@ -2,9 +2,9 @@
   --primary-clr: hsl(210, 100%, 51%);
   --danger-clr: hsl(6, 63%, 46%);
   --success-clr: hsl(145, 63%, 49%);
-  --border-clr: hsl(0, 0%, 15%);
-  --past-day-bg: hsl(0, 0%, 5%);
-  --weekend-bg: hsl(0, 0%, 3%);
+  --border-clr: hsl(0, 0%, 22%);
+  --past-day-bg: hsl(0, 0%, 7%);
+  --weekend-bg: hsl(0, 0%, 13%);
 }
 
 *,
@@ -289,4 +289,5 @@ header nav button:hover {
   color: white;
   font-family: inherit;
   font-size: inherit;
+  resize: none;
 }
