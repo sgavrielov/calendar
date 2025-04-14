@@ -155,12 +155,13 @@ header nav button:hover {
   border-right: 1px solid var(--border-clr);
 }
 
-.day.pastMonth {
+.day.pastMonth,
+.day.pastDays {
   background: var(--past-day-bg);
 }
 
 .day.currentDay,
-.day:not(.pastMonth):hover {
+.day:not(.pastMonth, .pastDays):hover {
   box-shadow: 0 0 5px 1px var(--primary-clr);
 }
 

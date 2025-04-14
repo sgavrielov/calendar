@@ -15,25 +15,75 @@ const viewDayData = document.querySelector("[day-data]");
 const saveDayData = document.querySelector("[save-day-data-btn]");
 const editDayData = document.querySelector("[edit-day-data]");
 const closeViewDataBtn = document.querySelector("[close-view-data-btn]");
-let editMode = false;
-let markdownContent = "";
 
 const locale = navigator.language || "en-US";
-
-downloadDataBtn.style.display = "none";
-let weekdays = initializeWeekdays(locale);
 const weekends = new Intl.Locale(locale).weekInfo.weekend;
+
+let weekdays = initializeWeekdays(locale);
+let editMode = false;
+let markdownContent = "";
 let nav = 0;
-let editingData = {};
 let data = {};
 let editingDate = "";
-viewDayData.innerHTML = marked.parse(markdownContent);
+let newDayData = false;
 
+downloadDataBtn.style.display = "none";
 UI.setWeekdays(weekdays);
 init(locale, nav);
 
-saveDayData.addEventListener("click", (e) => {
-  const [day, month, year] = editingDate.split("/");
+events.on("VIEW_DAY_DATA", viewDayData, (date) => {
+  editMode = false;
+  viewDataContainer.style.display = "block";
+  editDayData.style.display = "none";
+  viewDayData.style.display = "block";
+  toggleEditDayDataBtn.style.background = "hsl(0, 0%, 5%)";
+
+  const [year, month, day] = date.split("/");
+  editingDate = date;
+
+  if (markdownContent !== "" || newDayData) {
+    viewDayData.innerHTML = marked.parse(markdownContent);
+  } else {
+    viewDayData.innerHTML = marked.parse(JSON.parse(data[year][month][day]));
+  }
+});
+
+events.on("EDIT_DAY_DATA", viewDayData, (date) => {
+  editMode = true;
+  viewDataContainer.style.display = "block";
+  editDayData.style.display = "block";
+  viewDayData.style.display = "none";
+  toggleEditDayDataBtn.style.background = "hsl(210, 100%, 51%)";
+
+  if (newDayData) {
+    editDayData.value = markdownContent;
+  } else {
+    const [year, month, day] = date.split("/");
+    editingDate = date;
+    editDayData.value = JSON.parse(data[year][month][day]);
+  }
+});
+
+events.on("NEW_DAY_DATA", viewDayData, (date) => {
+  newDayData = true;
+  editMode = true;
+  viewDataContainer.style.display = "block";
+  editDayData.style.display = "block";
+  viewDayData.style.display = "none";
+  toggleEditDayDataBtn.style.background = "hsl(210, 100%, 51%)";
+
+  editingDate = date;
+});
+
+events.on("CLOSE_DAY_DATA", closeViewDataBtn, () => {
+  markdownContent = "";
+  editingDate = "";
+  newDayData = false;
+  viewDataContainer.style.display = "none";
+});
+
+events.on("SAVE_DAY_DATA", saveDayData, () => {
+  const [year, month, day] = editingDate.split("/");
 
   // For the saving part
   const json = JSON.stringify(markdownContent, null, 2);
@@ -51,6 +101,10 @@ saveDayData.addEventListener("click", (e) => {
   });
 
   init(locale, nav);
+});
+
+saveDayData.addEventListener("click", (e) => {
+  events.emit("SAVE_DAY_DATA", "");
 });
 
 downloadDataBtn.addEventListener("click", () => {
@@ -72,15 +126,9 @@ toggleEditDayDataBtn.addEventListener("click", () => {
   editMode = !editMode;
 
   if (editMode) {
-    viewDayData.style.display = "none";
-    editDayData.style.display = "block";
-    editDayData.value = markdownContent;
-    toggleEditDayDataBtn.style.background = "hsl(210, 100%, 51%)";
+    events.emit("EDIT_DAY_DATA", editingDate);
   } else {
-    viewDayData.innerHTML = marked.parse(markdownContent);
-    viewDayData.style.display = "block";
-    editDayData.style.display = "none";
-    toggleEditDayDataBtn.style.background = "hsl(0, 0%, 5%)";
+    events.emit("VIEW_DAY_DATA", editingDate);
   }
 });
 
@@ -89,8 +137,7 @@ editDayData.addEventListener("input", (e) => {
 });
 
 closeViewDataBtn.addEventListener("click", () => {
-  markdownContent = "";
-  viewDataContainer.style.display = "none";
+  events.emit("CLOSE_DAY_DATA", "");
 });
 
 loadDataBtn.addEventListener("change", async (e) => {
@@ -134,74 +181,20 @@ function init(locale, nav) {
 
   calendar.innerHTML = "";
   for (let i = 1; i <= paddingDays + daysInMonth; ++i) {
-    const daySquare = document.createElement("div");
-    daySquare.classList.add("day");
     if (i > paddingDays) {
-      daySquare.textContent = i - paddingDays;
-      daySquare.setAttribute("date", `${i - paddingDays}/${month}/${year}`);
+      let hasData =
+        Object.keys(data).length !== 0 && data[year][month][i - paddingDays];
 
-      if (nav < 0 || (nav <= 0 && i - paddingDays < day)) {
-        daySquare.classList.add("pastMonth");
-      } else {
-        if (
-          Object.keys(data).length === 0 ||
-          !data[year][month][i - paddingDays]
-        ) {
-          const addNewDataBtn = document.createElement("button");
-          addNewDataBtn.classList.add("addNewDataBtn");
-          addNewDataBtn.innerHTML = `<svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>`;
-
-          addNewDataBtn.addEventListener("click", () => {
-            editingDate = `${i - paddingDays}/${month}/${year}`;
-            viewDataDate.textContent = date.toLocaleDateString(locale, {
-              day: "2-digit",
-              month: "long",
-              year: "numeric",
-            });
-            viewDataContainer.style.display = "block";
-            viewDayData.style.display = "none";
-            editDayData.style.display = "block";
-            editDayData.value = markdownContent;
-            toggleEditDayDataBtn.style.background = "hsl(210, 100%, 51%)";
-          });
-
-          daySquare.append(addNewDataBtn);
-        }
-      }
-
-      if (
-        data[year] &&
-        data[year][month] &&
-        data[year][month][i - paddingDays]
-      ) {
-        const openDataDayBtn = document.createElement("button");
-        openDataDayBtn.classList.add("dataDayBtn");
-        openDataDayBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>`;
-        openDataDayBtn.addEventListener("click", () => {
-          editingDate = `${i - paddingDays}/${month}/${year}`;
-          viewDataContainer.style.display = "block";
-          viewDayData.style.display = "block";
-          editDayData.style.display = "none";
-
-          // editDayData.value = markdownContent;
-          markdownContent = JSON.parse(data[year][month][i - paddingDays]);
-          viewDayData.innerHTML = marked.parse(markdownContent);
-        });
-        daySquare.append(openDataDayBtn);
-      }
-
-      const w = ((i - 1) % 7) + 1;
-      if (weekends.includes(w)) {
-        daySquare.classList.add("weekend");
-      }
-
-      if (nav === 0 && i - paddingDays === day) {
-        daySquare.classList.add("currentDay");
-      }
+      UI.setDaySquare(calendar, {
+        date: `${year}/${month}/${i - paddingDays}`,
+        pastDays: nav < 0 || (nav <= 0 && i - paddingDays < day),
+        weekend: weekends.includes(((i - 1) % 7) + 1),
+        currentDay: nav === 0 && i - paddingDays === day,
+        containDataFile: hasData ? data[year][month][i - paddingDays] : false,
+      });
     } else {
-      daySquare.classList.add("pastMonth");
+      UI.setDaySquare(calendar, { classes: "pastMonth" });
     }
-    calendar.append(daySquare);
   }
 }
 
