@@ -12,7 +12,8 @@ const toggleEditDayDataBtn = document.querySelector(
   "[toggle-edit-day-data-btn]"
 );
 const viewDayData = document.querySelector("[day-data]");
-const saveDayData = document.querySelector("[save-day-data-btn]");
+const deleteDayDataBtn = document.querySelector("[delete-day-data-btn]");
+const saveDayDataBtn = document.querySelector("[save-day-data-btn]");
 const editDayData = document.querySelector("[edit-day-data]");
 const closeViewDataBtn = document.querySelector("[close-view-data-btn]");
 
@@ -28,6 +29,7 @@ let editingDate = "";
 let newDayData = false;
 
 downloadDataBtn.style.display = "none";
+deleteDayDataBtn.style.display = "none"; // should be visible only if there is data file
 UI.setWeekdays(weekdays);
 init(locale, nav);
 
@@ -44,6 +46,7 @@ events.on("VIEW_DAY_DATA", viewDayData, (date) => {
   if (markdownContent !== "" || newDayData) {
     viewDayData.innerHTML = marked.parse(markdownContent);
   } else {
+    deleteDayDataBtn.style.display = "flex";
     viewDayData.innerHTML = marked.parse(JSON.parse(data[year][month][day]));
   }
 });
@@ -60,6 +63,7 @@ events.on("EDIT_DAY_DATA", viewDayData, (date) => {
   } else {
     const [year, month, day] = date.split("/");
     editingDate = date;
+    deleteDayDataBtn.style.display = "flex";
     editDayData.value = JSON.parse(data[year][month][day]);
   }
 });
@@ -78,11 +82,14 @@ events.on("NEW_DAY_DATA", viewDayData, (date) => {
 events.on("CLOSE_DAY_DATA", closeViewDataBtn, () => {
   markdownContent = "";
   editingDate = "";
+  editDayData.value = "";
   newDayData = false;
+
   viewDataContainer.style.display = "none";
+  deleteDayDataBtn.style.display = "none";
 });
 
-events.on("SAVE_DAY_DATA", saveDayData, () => {
+events.on("SAVE_DAY_DATA", saveDayDataBtn, () => {
   const [year, month, day] = editingDate.split("/");
 
   // For the saving part
@@ -103,7 +110,25 @@ events.on("SAVE_DAY_DATA", saveDayData, () => {
   init(locale, nav);
 });
 
-saveDayData.addEventListener("click", (e) => {
+events.on("DELETE_DAY_DATA", deleteDayDataBtn, () => {
+  const [year, month, day] = editingDate.split("/");
+  delete data[year][month][day];
+
+  new Notification({
+    text: "Data has been deleted successfully",
+    showProgress: false,
+  });
+
+  events.emit("CLOSE_DAY_DATA");
+  downloadDataBtn.style.display = "block";
+  init(locale, nav);
+});
+
+deleteDayDataBtn.addEventListener("click", () => {
+  events.emit("DELETE_DAY_DATA");
+});
+
+saveDayDataBtn.addEventListener("click", (e) => {
   events.emit("SAVE_DAY_DATA", "");
 });
 
@@ -183,7 +208,10 @@ function init(locale, nav) {
   for (let i = 1; i <= paddingDays + daysInMonth; ++i) {
     if (i > paddingDays) {
       let hasData =
-        Object.keys(data).length !== 0 && data[year][month][i - paddingDays];
+        Object.keys(data).length !== 0 &&
+        data[year] &&
+        data[year][month] &&
+        data[year][month][i - paddingDays];
 
       UI.setDaySquare(calendar, {
         date: `${year}/${month}/${i - paddingDays}`,
