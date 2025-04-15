@@ -4,6 +4,7 @@ class UI {
    * @param {HTMLDivElement} parent
    * @param {string[]} weekdays
    */
+
   static setWeekdays(weekdays) {
     const weekdaysContainer = document.querySelector("[weekdays]");
 
@@ -70,7 +71,7 @@ class UI {
     }
 
     if (weekend) {
-      daySquare.classList.add("pastMonth");
+      daySquare.classList.add("weekend");
     }
 
     if (currentDay) {
