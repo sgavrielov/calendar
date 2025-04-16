@@ -64,7 +64,11 @@ events.on("EDIT_DAY_DATA", viewDayData, (date) => {
     const [year, month, day] = date.split("/");
     editingDate = date;
     deleteDayDataBtn.style.display = "flex";
-    editDayData.value = JSON.parse(data[year][month][day]);
+    // editDayData.value = JSON.parse(data[year][month][day]);
+    editDayData.value =
+      markdownContent === ""
+        ? JSON.parse(data[year][month][day])
+        : markdownContent;
   }
 });
 
@@ -139,7 +143,7 @@ downloadDataBtn.addEventListener("click", () => {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = `${new Date().getTime()}.json`;
+  a.download = "data.json";
 
   document.body.append(a);
   a.click();
@@ -159,6 +163,21 @@ toggleEditDayDataBtn.addEventListener("click", () => {
 
 editDayData.addEventListener("input", (e) => {
   markdownContent = e.target.value;
+});
+
+editDayData.addEventListener("keydown", function (e) {
+  if (e.key.toLowerCase() === "tab") {
+    e.preventDefault();
+
+    const start = this.selectionStart;
+    const end = this.selectionEnd;
+
+    const tab = "\t";
+
+    this.value =
+      this.value.substring(0, start) + tab + this.value.substring(end);
+    this.selectionStart = this.selectionEnd;
+  }
 });
 
 closeViewDataBtn.addEventListener("click", () => {
