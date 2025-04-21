@@ -1,5 +1,6 @@
 const currentMonthElem = document.querySelector("[current-month]");
 const currentYearElem = document.querySelector("[current-year]");
+const searchForm = document.querySelector("[search-form]");
 const prevMonthBtn = document.querySelector("[prev-btn]");
 const nextMonthBtn = document.querySelector("[next-btn]");
 const loadDataBtn = document.querySelector("[load-data-input]");
@@ -27,11 +28,22 @@ let nav = 0;
 let data = {};
 let editingDate = "";
 let newDayData = false;
+let searchResults = {};
 
 downloadDataBtn.style.display = "none";
 deleteDayDataBtn.style.display = "none"; // should be visible only if there is data file
 UI.setWeekdays(weekdays);
 init(locale, nav);
+
+searchForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const searchInput = e.target.searchInput.value;
+
+  const matches = searchCalendarData(data, searchInput);
+
+  console.log(matches);
+});
 
 events.on("VIEW_DAY_DATA", viewDayData, (date) => {
   editMode = false;
@@ -110,6 +122,8 @@ events.on("SAVE_DAY_DATA", saveDayDataBtn, () => {
     text: "Data has been saved",
     showProgress: false,
   });
+
+  searchForm.searchInput.disabled = false;
 
   init(locale, nav);
 });
@@ -192,6 +206,8 @@ loadDataBtn.addEventListener("change", async (e) => {
     const text = await file.text();
     data = JSON.parse(text);
 
+    searchForm.searchInput.disabled = false;
+
     init(locale, nav);
   } catch (error) {
     new Notification({
@@ -262,4 +278,23 @@ function initializeWeekdays(locale = navigator.language) {
   }
 
   return w.slice(firstDayIndex).concat(w.slice(0, firstDayIndex));
+}
+
+function searchCalendarData(data, keyword) {
+  const result = [];
+  for (const year in data) {
+    for (const month in data[year]) {
+      for (const day in data[year][month]) {
+        const text = JSON.parse(data[year][month][day]);
+
+        if (text.toLowerCase().includes(keyword.toLowerCase())) {
+          result.push({
+            date: `${year}/${month}/${day}`,
+            context: text,
+          });
+        }
+      }
+    }
+  }
+  return result;
 }
