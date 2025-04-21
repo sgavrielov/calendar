@@ -4,7 +4,6 @@ class UI {
    * @param {HTMLDivElement} parent
    * @param {string[]} weekdays
    */
-
   static setWeekdays(weekdays) {
     const weekdaysContainer = document.querySelector("[weekdays]");
 
@@ -138,5 +137,13 @@ class UI {
     }
 
     calendar.append(daySquare);
+  }
+
+  static getMonthName(locale, monthNumber) {
+    const d = new Date();
+    d.setMonth(monthNumber);
+    return d.toLocaleDateString(locale, {
+      month: "long",
+    });
   }
 }

@@ -223,6 +223,9 @@ function init(locale, nav) {
     UI.getFormattedDate(firstDayDate, locale).weekday
   );
 
+  prevMonthBtn.textContent = UI.getMonthName(locale, month - 1);
+  nextMonthBtn.textContent = UI.getMonthName(locale, month + 1);
+
   calendar.innerHTML = "";
   for (let i = 1; i <= paddingDays + daysInMonth; ++i) {
     if (i > paddingDays) {
