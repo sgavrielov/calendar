@@ -127,7 +127,8 @@ header .searchForm button {
 
 header nav button {
   height: 40px;
-  width: 55px;
+  min-width: fit-content;
+  padding-inline: 1rem;
   background-color: transparent;
   border: 1px solid light-dark(var(--light-border-clr), var(--dark-border-clr));
   color: light-dark(var(--light-clr), var(--dark-clr));

@@ -50,6 +50,7 @@ class UI {
    * @param {boolean} [options.weekend=false] - Whether to mark the day as part of a past month (applies 'pastMonth' class).
    * @param {boolean} [options.currentDay=false] - Whether to mark the day as the current day (applies 'currentDay' class).
    * @param {boolean|string} [options.containDataFile=false] - If truthy, adds a button indicating a data file exists for this day. Can also be a string representing the file name or status.
+   * @param {boolean|string} [options.searched=false]
    */
   static setDaySquare(
     calendar,
@@ -60,10 +61,15 @@ class UI {
       weekend = false,
       currentDay = false,
       containDataFile = false,
+      searched = false,
     } = {}
   ) {
     const daySquare = document.createElement("div");
     daySquare.classList = classes ? `day ${classes}` : "day";
+
+    if (searched) {
+      daySquare.style.border = "1px solid #27ae60";
+    }
 
     if (pastDays) {
       daySquare.classList.add("pastDays");

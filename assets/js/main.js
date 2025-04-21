@@ -28,7 +28,7 @@ let nav = 0;
 let data = {};
 let editingDate = "";
 let newDayData = false;
-let searchResults = {};
+let searchResults = [];
 
 downloadDataBtn.style.display = "none";
 deleteDayDataBtn.style.display = "none"; // should be visible only if there is data file
@@ -37,12 +37,9 @@ init(locale, nav);
 
 searchForm.addEventListener("submit", (e) => {
   e.preventDefault();
-
   const searchInput = e.target.searchInput.value;
-
-  const matches = searchCalendarData(data, searchInput);
-
-  console.log(matches);
+  searchResults = searchCalendarData(data, searchInput);
+  init(locale, nav);
 });
 
 events.on("VIEW_DAY_DATA", viewDayData, (date) => {
@@ -251,12 +248,19 @@ function init(locale, nav) {
         data[year][month] &&
         data[year][month][i - paddingDays];
 
+      const currentDate = `${year}/${month}/${i - paddingDays}`;
+
+      const isSearched = searchResults.some(
+        (match) => match.date === currentDate
+      );
+
       UI.setDaySquare(calendar, {
         date: `${year}/${month}/${i - paddingDays}`,
         pastDays: nav < 0 || (nav <= 0 && i - paddingDays < day),
         weekend: weekends.includes(((i - 1) % 7) + 1),
         currentDay: nav === 0 && i - paddingDays === day,
         containDataFile: hasData ? data[year][month][i - paddingDays] : false,
+        searched: isSearched,
       });
     } else {
       UI.setDaySquare(calendar, { classes: "pastMonth" });
