@@ -107,13 +107,21 @@ header .searchForm {
   align-items: center;
 }
 
+header .searchForm select {
+  height: 40px;
+  width: fit-content;
+  padding-inline: 1rem;
+  border: none;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
 header .searchForm input {
   flex: 1;
   height: 100%;
   height: 40px;
   border: none;
-  border-top-left-radius: 3px;
-  border-bottom-left-radius: 3px;
+  border-radius: 0;
 }
 
 header .searchForm button {

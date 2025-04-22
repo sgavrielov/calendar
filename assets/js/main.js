@@ -1,6 +1,7 @@
 const currentMonthElem = document.querySelector("[current-month]");
 const currentYearElem = document.querySelector("[current-year]");
 const searchForm = document.querySelector("[search-form]");
+const containDataByYear = document.querySelector("[contain-data-by-year]");
 const prevMonthBtn = document.querySelector("[prev-btn]");
 const nextMonthBtn = document.querySelector("[next-btn]");
 const loadDataBtn = document.querySelector("[load-data-input]");
@@ -30,17 +31,11 @@ let editingDate = "";
 let newDayData = false;
 let searchResults = [];
 
+containDataByYear.style.display = "none";
 downloadDataBtn.style.display = "none";
 deleteDayDataBtn.style.display = "none"; // should be visible only if there is data file
 UI.setWeekdays(weekdays);
 init(locale, nav);
-
-searchForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const searchInput = e.target.searchInput.value;
-  searchResults = searchCalendarData(data, searchInput);
-  init(locale, nav);
-});
 
 events.on("VIEW_DAY_DATA", viewDayData, (date) => {
   editMode = false;
@@ -205,6 +200,14 @@ loadDataBtn.addEventListener("change", async (e) => {
 
     searchForm.searchInput.disabled = false;
 
+    containDataByYear.style.display = "block";
+    for (const year in data) {
+      const option = document.createElement("option");
+      option.value = year;
+      option.textContent = year;
+      containDataByYear.append(option);
+    }
+
     init(locale, nav);
   } catch (error) {
     new Notification({
@@ -214,14 +217,29 @@ loadDataBtn.addEventListener("change", async (e) => {
   }
 });
 
+searchForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const searchInput = e.target.searchInput.value;
+  searchResults = searchCalendarData(data, searchInput);
+  init(locale, nav);
+});
+
+containDataByYear.addEventListener("change", (e) => {
+  init(locale, 0, e.target.value);
+});
+
 prevMonthBtn.addEventListener("click", () => init(locale, --nav));
 nextMonthBtn.addEventListener("click", () => init(locale, ++nav));
 
-function init(locale, nav) {
+function init(locale, nav, yyyy = undefined) {
   const date = new Date();
 
   if (nav !== 0) {
     date.setMonth(new Date().getMonth() + nav);
+  }
+
+  if (yyyy != undefined) {
+    date.setFullYear(yyyy, 0);
   }
 
   currentMonthElem.textContent = UI.getFormattedDate(date, locale).month;
