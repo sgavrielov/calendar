@@ -1,0 +1,437 @@
+:root {
+  color-scheme: light dark;
+
+  --primary-clr-900: hsla(210, 100%, 51%, 1);
+  --primary-clr-800: hsla(210, 100%, 51%, 0.8);
+  --primary-clr-700: hsla(210, 100%, 51%, 0.7);
+  --primary-clr-600: hsla(210, 100%, 51%, 0.6);
+  --primary-clr-500: hsla(210, 100%, 51%, 0.5);
+  --primary-clr-400: hsla(210, 100%, 51%, 0.4);
+  --primary-clr-300: hsla(210, 100%, 51%, 0.3);
+  --primary-clr-200: hsla(210, 100%, 51%, 0.2);
+  --primary-clr-100: hsla(210, 100%, 51%, 0.1);
+
+  --success-clr-900: hsla(145, 63%, 49%, 1);
+  --success-clr-800: hsla(145, 63%, 49%, 0.8);
+  --success-clr-700: hsla(145, 63%, 49%, 0.7);
+  --success-clr-600: hsla(145, 63%, 49%, 0.6);
+  --success-clr-500: hsla(145, 63%, 49%, 0.5);
+  --success-clr-400: hsla(145, 63%, 49%, 0.4);
+  --success-clr-300: hsla(145, 63%, 49%, 0.3);
+  --success-clr-200: hsla(145, 63%, 49%, 0.2);
+  --success-clr-100: hsla(145, 63%, 49%, 0.1);
+
+  --danger-clr-900: hsla(352, 100%, 51%, 1);
+  --danger-clr-800: hsla(352, 100%, 51%, 0.8);
+  --danger-clr-700: hsla(352, 100%, 51%, 0.7);
+  --danger-clr-600: hsla(352, 100%, 51%, 0.6);
+  --danger-clr-500: hsla(352, 100%, 51%, 0.5);
+  --danger-clr-400: hsla(352, 100%, 51%, 0.4);
+  --danger-clr-300: hsla(352, 100%, 51%, 0.3);
+  --danger-clr-200: hsla(352, 100%, 51%, 0.2);
+  --danger-clr-100: hsla(352, 100%, 51%, 0.1);
+
+  --grey-clr-900: hsla(0, 0%, 66%, 1);
+  --grey-clr-800: hsla(0, 0%, 66%, 0.8);
+  --grey-clr-700: hsla(0, 0%, 66%, 0.7);
+  --grey-clr-600: hsla(0, 0%, 66%, 0.6);
+  --grey-clr-500: hsla(0, 0%, 66%, 0.5);
+  --grey-clr-400: hsla(0, 0%, 66%, 0.4);
+  --grey-clr-300: hsla(0, 0%, 66%, 0.3);
+  --grey-clr-200: hsla(0, 0%, 66%, 0.2);
+  --grey-clr-100: hsla(0, 0%, 66%, 0.1);
+
+  --dark-clr-900: hsla(0, 0%, 5%, 1);
+  --dark-clr-800: hsla(0, 0%, 5%, 0.8);
+  --dark-clr-700: hsla(0, 0%, 5%, 0.7);
+  --dark-clr-600: hsla(0, 0%, 5%, 0.6);
+  --dark-clr-500: hsla(0, 0%, 5%, 0.5);
+  --dark-clr-400: hsla(0, 0%, 5%, 0.4);
+  --dark-clr-300: hsla(0, 0%, 5%, 0.3);
+  --dark-clr-200: hsla(0, 0%, 5%, 0.2);
+  --dark-clr-100: hsla(0, 0%, 5%, 0.1);
+
+  --white-clr: hsl(0, 0%, 100%);
+  --black-clr: hsl(0, 0%, 0%);
+
+  --border: 1px solid light-dark(var(--grey-clr-500), var(--grey-clr-300));
+
+  --body-bg: light-dark(var(--white-clr), var(--black-clr));
+  --body-default-clr: light-dark(var(--black-clr), var(--white-clr));
+
+  --pastMonth-bg: light-dark(var(--grey-clr-200), var(--grey-clr-100));
+  --pastDay-bg: light-dark(var(--grey-clr-100), var(--grey-clr-200));
+  --futureMonth-bg: light-dark(var(--grey-clr-200), var(--grey-clr-100));
+
+  --radius-sm: 3px;
+  --radius-m: 5px;
+  --radius-lg: 8px;
+  --radius-xlg: 10px;
+  --radius-circle: 50%;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  background-color: var(--body-bg);
+  color: var(--body-default-clr);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-size: 14px;
+}
+
+svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  color: inherit;
+}
+
+button,
+.btn {
+  background-color: light-dark(var(--black-clr), var(--grey-clr-300));
+  color: light-dark(var(--white-clr), var(--white-clr));
+  border: var(--border);
+}
+
+button:hover,
+.btn:hover {
+  transition: all 200ms linear;
+  cursor: pointer;
+  background-color: var(--primary-clr-900);
+}
+
+header,
+.weekdays {
+  height: 70px;
+  width: 100%;
+  border-bottom: var(--border);
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+header .currentDateView h3 {
+  font-size: 16px;
+}
+
+header .currentDateView small {
+  color: var(--primary-clr-900);
+}
+
+header .search {
+  position: relative;
+  display: flex;
+}
+
+header .search .searchResults {
+  display: none;
+  position: absolute;
+  z-index: 1;
+  bottom: -300px;
+  left: 0;
+  width: 350px;
+  height: 300px;
+  background-color: var(--body-bg);
+  border: var(--border);
+  border-top: none;
+  overflow-y: auto;
+}
+
+header .search .searchResults .searchResult {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: 2rem;
+}
+
+header .search input {
+  height: 35px;
+  border: var(--border);
+  width: 350px;
+  padding-inline: 1rem;
+}
+
+header .search button {
+  height: 35px;
+  width: 35px;
+  border: none;
+  border: var(--border);
+}
+
+header .search button:hover {
+  transition: all 200ms linear;
+  cursor: pointer;
+  background-color: var(--primary-clr-900);
+}
+
+header .search button svg {
+  width: 15px;
+  height: 15px;
+}
+
+header .search label.downloadDataBtn {
+  display: none;
+  margin-inline: 1rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+}
+
+header .search label {
+  margin-inline: 1rem;
+  height: 35px;
+  width: max-content;
+  padding-inline: 1rem;
+  line-height: 35px;
+  font-weight: bold;
+  font-size: 12px;
+  border-radius: var(--radius-sm);
+}
+
+header .controls button {
+  height: 35px;
+  width: 80px;
+  font-size: 12px;
+  border-radius: var(--radius-sm);
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.weekdays .weekday {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.weekdays .weekday:nth-child(even) {
+  border-left: var(--border);
+  border-right: var(--border);
+}
+
+.calendar {
+  width: 100%;
+  height: calc(100vh - 140px);
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.calendar .calendarRow {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.calendar .calendarRow:nth-child(odd) {
+  border-top: var(--border);
+  border-bottom: var(--border);
+}
+
+.calendar .calendarRow:first-child {
+  border-top: none;
+}
+
+.calendar .calendarRow .day {
+  position: relative;
+  padding: 1rem;
+}
+
+.calendar .calendarRow .day:nth-child(even) {
+  border-left: var(--border);
+  border-right: var(--border);
+}
+
+.calendar .calendarRow .day.pastMonth {
+  background-color: var(--pastMonth-bg);
+}
+
+.calendar .calendarRow .day.futureMonth {
+  background-color: var(--futureMonth-bg);
+}
+
+.calendar .calendarRow .day.pastMonth,
+.calendar .calendarRow .day.futureMonth {
+  user-select: none;
+}
+
+.calendar .calendarRow .day.currentDay {
+  outline: 1px solid var(--primary-clr-500);
+  border: none;
+}
+
+.calendar .calendarRow .day:not(.pastMonth, .futureMonth):hover {
+  outline: 1px solid var(--primary-clr-500);
+  border: none;
+}
+
+.calendar .calendarRow .day.pastDay:hover {
+  outline: 1px solid var(--danger-clr-500);
+  border: none;
+}
+
+.calendar .calendarRow .day.futureMonth .totalDaysInFutureMonth {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 1rem;
+  background-color: var(--grey-clr-300);
+  border-bottom-left-radius: var(--radius-sm);
+  color: light-dark(var(--dark-clr-800), var(--grey-clr-900));
+}
+
+.calendar .calendarRow .day .dayNumber {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  user-select: none;
+}
+
+.calendar .calendarRow .day .viewDayDataBtn {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  height: 35px;
+  width: 35px;
+  border: var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.calendar .calendarRow .day .addNewDataBtn {
+  position: absolute;
+  display: none;
+  bottom: 10px;
+  right: 10px;
+  height: 35px;
+  width: 35px;
+  border: var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.calendar .calendarRow .day:hover .addNewDataBtn {
+  display: block;
+}
+
+.calendar .calendarRow .day .addNewDataBtn:hover {
+  transition: all 200ms linear;
+  cursor: pointer;
+  background-color: var(--primary-clr-900);
+}
+
+.viewDataWrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  display: none;
+  width: 100dvw;
+  height: 100dvh;
+  background-color: hsla(0, 0%, 0%, 0.5);
+}
+
+.viewDataContainer {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 90dvh;
+  width: 894px;
+  max-width: 894px;
+  border-radius: 3px;
+  box-shadow: 0 0 5px 1px var(--primary-clr-900);
+  overflow-y: auto;
+  display: block;
+}
+
+.viewDataContainer .viewDataControls {
+  height: 70px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding-inline: 2rem;
+  gap: 2rem;
+  background: var(--body-bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.viewDataContainer .viewDataControls button {
+  height: 35px;
+  width: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.viewDataContainer .viewDataControls button {
+  border: none;
+  color: white;
+  border-radius: 3px;
+}
+
+.viewDataContainer .viewDataControls button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.viewDataContainer .viewDataControls button svg {
+  width: 15px;
+  height: 15px;
+}
+
+.viewDataContainer .viewDataControls button[toggle-edit-day-data-btn] {
+  background: var(--primary-clr-900);
+}
+
+.viewDataContainer .viewDataControls button[close-view-data-btn] {
+  background: var(--grey-clr-900);
+}
+
+.viewDataContainer .viewDataControls button[save-day-data-btn] {
+  background: var(--success-clr-900);
+}
+
+.viewDataContainer .viewDataControls button[delete-day-data-btn] {
+  background: var(--danger-clr-900);
+}
+
+.viewDataContainer .markdown-body,
+.viewDataContainer #markdownEditor {
+  height: calc(100% - 70px);
+  width: 100%;
+  padding: 2rem;
+  display: none;
+}
+
+.viewDataContainer .markdown-body {
+  min-height: calc(100% - 70px);
+  height: max-content;
+}
+
+.viewDataContainer #markdownEditor {
+  background: var(--body-bg);
+  color: white;
+  font-family: inherit;
+  font-size: inherit;
+  resize: none;
+}

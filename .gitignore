@@ -1,4 +1,10 @@
+# Folder
 data/
 old/
-*.png
 dist/
+assets/
+vendor/
+
+# Files
+*.png
+_index.html
