@@ -162,6 +162,11 @@ header .search .searchResults .searchResult {
   padding-inline: 2rem;
 }
 
+header .search .searchResults .searchResult:hover {
+  color: var(--primary-clr-900);
+  cursor: pointer;
+}
+
 header .search input {
   height: 35px;
   border: var(--border);

@@ -67,6 +67,7 @@ SEARCH.addEventListener("submit", (e) => {
 
       VIEW_DATA_WRAPPER.style.display = "block";
       VIEW_DAY_DATA.style.display = "block";
+      EDIT_DAY_DATA.style.display = "none";
 
       VIEW_DAY_DATA_SVG.style.display = "none";
       EDIT_DAY_DATA_SVG.style.display = "block";
@@ -74,9 +75,8 @@ SEARCH.addEventListener("submit", (e) => {
       globalState.editViewDayDataEnabled = false;
       globalState.editViewDate = `${year}/${month}/${day}`;
 
-      globalState.markdownContent = JSON.parse(
-        globalState.data[year][month][day]
-      );
+      globalState.markdownContent = globalState.data[year][month][day];
+
       VIEW_DAY_DATA.innerHTML = marked.parse(globalState.markdownContent);
 
       globalState.searchResults = [];
@@ -157,6 +157,10 @@ SAVE_DAY_DATA_BTN.addEventListener("click", () => {
   LOAD_DATA_LABEL.style.display = "none";
   DOWNLOAD_DATA_BTN.style.display = "flex";
   SEARCH.q.disabled = false;
+
+  closeViewDayData();
+
+  calendar.render(globalState.nav);
 });
 
 TOGGLE_DAY_DATA_BTN.addEventListener("click", () => {

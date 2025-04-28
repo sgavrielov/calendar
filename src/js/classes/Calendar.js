@@ -159,6 +159,7 @@ class Calendar {
             globalState.editViewDate = `${year}/${month}/${day}`;
 
             globalState.markdownContent = globalState.data[year][month][day];
+
             VIEW_DAY_DATA.innerHTML = marked.parse(globalState.markdownContent);
           });
 
