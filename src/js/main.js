@@ -221,8 +221,12 @@ EDIT_DAY_DATA.addEventListener("keydown", function (e) {
 
 function closeViewDayData() {
   VIEW_DATA_WRAPPER.style.display = "none";
+  VIEW_DAY_DATA.style.display = "none";
+  EDIT_DAY_DATA.style.display = "none";
   EDIT_DAY_DATA.value = "";
+
   globalState.editViewDayDataEnabled = false;
+  globalState.editViewDate = "";
 }
 
 function searchCalendarData(data, keyword) {
