@@ -141,7 +141,6 @@ DELETE_DAY_DATA_BTN.addEventListener("click", (e) => {
   } else {
     delete globalState.data[year][month][day];
   }
-  console.log(globalState.data);
 });
 
 SAVE_DAY_DATA_BTN.addEventListener("click", () => {
