@@ -138,9 +138,15 @@ DELETE_DAY_DATA_BTN.addEventListener("click", (e) => {
 
   if (!globalState.data?.[year]?.[month]?.[day]) {
     closeViewDayData();
-  } else {
-    delete globalState.data[year][month][day];
+    return;
   }
+
+  delete globalState.data[year][month][day];
+
+  closeViewDayData();
+  deleteData(year, month);
+
+  calendar.render(globalState.nav);
 });
 
 SAVE_DAY_DATA_BTN.addEventListener("click", () => {
@@ -245,4 +251,17 @@ function searchCalendarData(data, keyword) {
     }
   }
   return result;
+}
+
+function deleteData(year, month) {
+  const yearData = globalState.data[year];
+  const monthData = yearData?.[month];
+
+  if (monthData && Object.keys(monthData).length === 0) {
+    delete globalState.data[year][month];
+  }
+
+  if (yearData && Object.keys(yearData).length === 0) {
+    delete globalState.data[year];
+  }
 }
