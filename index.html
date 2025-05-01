@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="src/vendor/notification/notification.css" />
     <link rel="stylesheet" href="src/css/style.css" />
     <link
       rel="stylesheet"
@@ -19,12 +20,6 @@
 
       <form class="search" search>
         <input type="text" name="q" placeholder="Search" disabled />
-        <!-- <button>
-          <svg viewBox="0 0 24 24">
-            <circle cx="11" cy="11" r="8"></circle>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-          </svg>
-        </button> -->
         <label
           for="dataInput"
           title="Load data file from local file system"
@@ -123,6 +118,7 @@
       </div>
     </div>
 
+    <script src="src/vendor/notification/Notification.js"></script>
     <script src="src/vendor/marked/marked.min.js"></script>
     <script type="module" src="src/js/main.js"></script>
   </body>

@@ -20,13 +20,35 @@ import {
 } from "./constants.js";
 import { globalState } from "./globalState.js";
 
+SEARCH.q.addEventListener("input", (e) => {
+  if (e.target.value.length === 0) {
+    globalState.searchResults = [];
+    SEARCH_RESULTS_CONTAINER.innerHTML = "";
+    SEARCH_RESULTS_CONTAINER.style.display = "none";
+  }
+});
+
 SEARCH.addEventListener("submit", (e) => {
   e.preventDefault();
+
+  globalState.searchResults = [];
+  SEARCH_RESULTS_CONTAINER.innerHTML = "";
 
   globalState.searchResults = searchCalendarData(
     globalState.data,
     e.target.q.value
   );
+
+  if (globalState.searchResults.length === 0) {
+    new Notification({
+      text: "No search results",
+      autoClose: 3000,
+      showProgress: false,
+    });
+    SEARCH_RESULTS_CONTAINER.innerHTML = "";
+    SEARCH_RESULTS_CONTAINER.style.display = "none";
+    return;
+  }
 
   globalState.searchResults.forEach((searchResult, i) => {
     const [year, month, day] = searchResult.date.split("/");
@@ -46,7 +68,6 @@ SEARCH.addEventListener("submit", (e) => {
     searchResultDataElem.textContent = d;
 
     searchResultDataElem.addEventListener("click", () => {
-      console.log(year, month, day);
       SEARCH_RESULTS_CONTAINER.style.display = "none";
       SEARCH.q.value = "";
 
@@ -146,7 +167,14 @@ DELETE_DAY_DATA_BTN.addEventListener("click", (e) => {
   closeViewDayData();
   deleteData(year, month);
 
+  DOWNLOAD_DATA_BTN.style.display = "flex";
   calendar.render(globalState.nav);
+
+  new Notification({
+    text: "Data has been deleted!",
+    autoClose: 3000,
+    showProgress: false,
+  });
 });
 
 SAVE_DAY_DATA_BTN.addEventListener("click", () => {

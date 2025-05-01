@@ -172,6 +172,11 @@ header .search input {
   border: var(--border);
   width: 350px;
   padding-inline: 1rem;
+  background-color: light-dark(transparent, var(--dark-clr-100));
+}
+
+header .search input:disabled {
+  background-color: var(--grey-clr-400);
 }
 
 header .search button {
@@ -435,7 +440,7 @@ header .controls button {
 
 .viewDataContainer #markdownEditor {
   background: var(--body-bg);
-  color: white;
+  color: var(--body-default-clr);
   font-family: inherit;
   font-size: inherit;
   resize: none;
